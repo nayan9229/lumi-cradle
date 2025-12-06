@@ -99,7 +99,7 @@ export default function Sidebar({ isOpen = true, onClose }) {
         {user && (
           <div className="p-4 border-t border-gray-200">
             <div className="flex items-center gap-3 px-2 py-2">
-              <Avatar src={null} alt={user.name} size="md" />
+              <Avatar src={user.avatarUrl} alt={user.name} size="md" />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 truncate">
                   {user.name}

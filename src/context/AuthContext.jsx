@@ -53,6 +53,7 @@ export function AuthProvider({ children }) {
         email: user.email,
         name: user.name,
         role: user.role,
+        avatarUrl: user.avatarUrl,
       };
 
       // Store user data and token

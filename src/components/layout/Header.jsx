@@ -79,7 +79,7 @@ export default function Header({ onMenuClick }) {
                 className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 transition-colors"
                 aria-label="User menu"
               >
-                <Avatar src={null} alt={user?.name || 'User'} size="sm" />
+                <Avatar src={user?.avatarUrl} alt={user?.name || 'User'} size="sm" />
                 <span className="hidden sm:block text-sm font-medium text-gray-700">
                   {user?.name}
                 </span>

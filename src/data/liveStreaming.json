@@ -29,21 +29,21 @@
         "timestamp": "2024-01-15T10:30:00Z",
         "duration": "15 min",
         "size": "2.1 GB",
-        "thumbnail": "/images/recording-thumb-1.jpg"
+        "thumbnail": "https://images.pexels.com/photos/1620765/pexels-photo-1620765.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop"
       },
       {
         "id": "2",
         "timestamp": "2024-01-15T08:15:00Z",
         "duration": "20 min",
         "size": "2.8 GB",
-        "thumbnail": "/images/recording-thumb-2.jpg"
+        "thumbnail": "https://images.pexels.com/photos/1620764/pexels-photo-1620764.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop"
       },
       {
         "id": "3",
         "timestamp": "2024-01-14T22:00:00Z",
         "duration": "30 min",
         "size": "4.2 GB",
-        "thumbnail": "/images/recording-thumb-3.jpg"
+        "thumbnail": "https://images.pexels.com/photos/1620763/pexels-photo-1620763.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop"
       }
     ]
   },
@@ -72,18 +72,17 @@
     {
       "id": "1",
       "timestamp": "2024-01-15T14:25:00Z",
-      "thumbnail": "/images/snapshot-1.jpg"
+      "thumbnail": "https://images.pexels.com/photos/1620762/pexels-photo-1620762.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop"
     },
     {
       "id": "2",
       "timestamp": "2024-01-15T12:10:00Z",
-      "thumbnail": "/images/snapshot-2.jpg"
+      "thumbnail": "https://images.pexels.com/photos/1620761/pexels-photo-1620761.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop"
     },
     {
       "id": "3",
       "timestamp": "2024-01-15T08:00:00Z",
-      "thumbnail": "/images/snapshot-3.jpg"
+      "thumbnail": "https://images.pexels.com/photos/1620760/pexels-photo-1620760.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop"
     }
   ]
 }
-

@@ -366,18 +366,27 @@ export default function Dashboard() {
               {milestones.slice(0, 3).map((milestone) => (
                 <motion.div
                   key={milestone.id}
-                  className="p-4 bg-gradient-to-br from-pastel-blue to-pastel-teal rounded-lg border border-gray-200"
+                  className="overflow-hidden bg-gradient-to-br from-pastel-blue to-pastel-teal rounded-lg border border-gray-200"
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <div className="flex items-center gap-2 mb-2">
-                    <Tag color="blue">{milestone.category}</Tag>
+                  <div className="aspect-video w-full overflow-hidden">
+                    <img
+                      src={milestone.thumbnailUrl}
+                      alt={milestone.title}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                  <h4 className="font-semibold text-gray-900 mb-1">{milestone.title}</h4>
-                  <p className="text-xs text-gray-600 mb-2">{milestone.description}</p>
-                  <p className="text-xs text-gray-500">
-                    {new Date(milestone.timestamp).toLocaleDateString()}
-                  </p>
+                  <div className="p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Tag color="blue">{milestone.category}</Tag>
+                    </div>
+                    <h4 className="font-semibold text-gray-900 mb-1">{milestone.title}</h4>
+                    <p className="text-xs text-gray-600 mb-2">{milestone.description}</p>
+                    <p className="text-xs text-gray-500">
+                      {new Date(milestone.timestamp).toLocaleDateString()}
+                    </p>
+                  </div>
                 </motion.div>
               ))}
             </div>

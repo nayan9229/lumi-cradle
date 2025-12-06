@@ -93,22 +93,22 @@ export default function LiveStreaming() {
 
   return (
     <motion.div
-      className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto"
+      className="p-3 sm:p-4 lg:p-6 xl:p-8 max-w-7xl mx-auto"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       {/* Header */}
-      <motion.div variants={itemVariants} className="mb-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Live Streaming</h1>
-            <p className="text-gray-600">
+      <motion.div variants={itemVariants} className="mb-4 sm:mb-6">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex-1">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">Live Streaming</h1>
+            <p className="text-sm sm:text-base text-gray-600">
               Monitor your baby in real-time with HD video streaming.
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Badge variant={streamStatus.isLive ? 'success' : 'danger'} className="flex items-center gap-1">
+            <Badge variant={streamStatus.isLive ? 'success' : 'danger'} className="flex items-center gap-1 text-xs sm:text-sm">
               {streamStatus.isLive ? (
                 <>
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
@@ -125,7 +125,7 @@ export default function LiveStreaming() {
         </div>
       </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Main Video Area */}
         <motion.div variants={itemVariants} className="lg:col-span-2">
           <Card className="p-0 overflow-hidden">
@@ -135,45 +135,45 @@ export default function LiveStreaming() {
                 <>
                   {/* Simulated video feed */}
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-900 to-purple-900 opacity-50" />
-                  <div className="relative z-10 text-center">
-                    <Video className="w-16 h-16 text-white/50 mx-auto mb-2" />
-                    <p className="text-white/70 text-sm">Live Stream Active</p>
-                    <p className="text-white/50 text-xs mt-1">
+                  <div className="relative z-10 text-center px-4">
+                    <Video className="w-12 h-12 sm:w-16 sm:h-16 text-white/50 mx-auto mb-2" />
+                    <p className="text-white/70 text-xs sm:text-sm">Live Stream Active</p>
+                    <p className="text-white/50 text-xs mt-1 break-words">
                       {streamStatus.quality} • {streamStatus.resolution} • {streamStatus.fps} FPS
                     </p>
                   </div>
                   
                   {/* Camera Controls Overlay */}
-                  <div className="absolute top-4 right-4 flex gap-2">
+                  <div className="absolute top-2 right-2 sm:top-4 sm:right-4 flex gap-1 sm:gap-2">
                     <Button
                       variant="outline"
                       onClick={() => handleZoom('in')}
-                      className="bg-white/90 hover:bg-white"
+                      className="bg-white/90 hover:bg-white p-1.5 sm:p-2"
                     >
-                      <ZoomIn className="w-4 h-4" />
+                      <ZoomIn className="w-3 h-3 sm:w-4 sm:h-4" />
                     </Button>
                     <Button
                       variant="outline"
                       onClick={() => handleZoom('out')}
-                      className="bg-white/90 hover:bg-white"
+                      className="bg-white/90 hover:bg-white p-1.5 sm:p-2"
                     >
-                      <ZoomOut className="w-4 h-4" />
+                      <ZoomOut className="w-3 h-3 sm:w-4 sm:h-4" />
                     </Button>
                     <Button
                       variant="outline"
                       onClick={() => setShowSettings(!showSettings)}
-                      className="bg-white/90 hover:bg-white"
+                      className="bg-white/90 hover:bg-white p-1.5 sm:p-2"
                     >
-                      <Settings className="w-4 h-4" />
+                      <Settings className="w-3 h-3 sm:w-4 sm:h-4" />
                     </Button>
                   </div>
 
                   {/* Night Vision Indicator */}
                   {cameraSettings.nightVision && (
-                    <div className="absolute top-4 left-4">
-                      <Badge variant="info" className="flex items-center gap-1">
+                    <div className="absolute top-2 left-2 sm:top-4 sm:left-4">
+                      <Badge variant="info" className="flex items-center gap-1 text-xs">
                         <Moon className="w-3 h-3" />
-                        Night Vision
+                        <span className="hidden sm:inline">Night Vision</span>
                       </Badge>
                     </div>
                   )}
@@ -181,13 +181,13 @@ export default function LiveStreaming() {
                   {/* Recording Indicator */}
                   {recording.isRecording && (
                     <motion.div
-                      className="absolute top-4 left-1/2 transform -translate-x-1/2"
+                      className="absolute top-2 sm:top-4 left-1/2 transform -translate-x-1/2"
                       animate={{ opacity: [1, 0.5, 1] }}
                       transition={{ repeat: Infinity, duration: 1 }}
                     >
-                      <Badge variant="danger" className="flex items-center gap-1">
+                      <Badge variant="danger" className="flex items-center gap-1 text-xs">
                         <Square className="w-3 h-3" />
-                        Recording
+                        <span className="hidden sm:inline">Recording</span>
                       </Badge>
                     </motion.div>
                   )}
@@ -201,68 +201,72 @@ export default function LiveStreaming() {
             </div>
 
             {/* Video Controls */}
-            <div className="p-4 bg-gray-50 border-t border-gray-200">
-              <div className="flex items-center justify-between flex-wrap gap-4">
-                <div className="flex items-center gap-2">
+            <div className="p-3 sm:p-4 bg-gray-50 border-t border-gray-200">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
+                <div className="flex items-center gap-2 flex-wrap">
                   <Button
                     onClick={toggleStream}
                     variant={streamStatus.isLive ? 'secondary' : 'primary'}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm px-3 sm:px-4 py-2"
                   >
                     {streamStatus.isLive ? (
                       <>
-                        <Pause className="w-4 h-4" />
-                        Pause
+                        <Pause className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                        <span className="hidden sm:inline">Pause</span>
                       </>
                     ) : (
                       <>
-                        <Play className="w-4 h-4" />
-                        Start Stream
+                        <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                        <span className="hidden sm:inline">Start Stream</span>
+                        <span className="sm:hidden">Start</span>
                       </>
                     )}
                   </Button>
                   <Button
                     onClick={toggleRecording}
                     variant={recording.isRecording ? 'danger' : 'outline'}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm px-3 sm:px-4 py-2"
                     disabled={!streamStatus.isLive}
                   >
-                    <Square className="w-4 h-4" />
-                    {recording.isRecording ? 'Stop Recording' : 'Record'}
+                    <Square className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <span className="hidden sm:inline">{recording.isRecording ? 'Stop Recording' : 'Record'}</span>
+                    <span className="sm:hidden">{recording.isRecording ? 'Stop' : 'Record'}</span>
                   </Button>
                   <Button
                     onClick={takeSnapshot}
                     variant="outline"
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm px-3 sm:px-4 py-2"
                     disabled={!streamStatus.isLive}
                   >
-                    <Camera className="w-4 h-4" />
-                    Snapshot
+                    <Camera className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <span className="hidden sm:inline">Snapshot</span>
                   </Button>
                 </div>
                 <div className="flex items-center gap-2">
                   <Button
                     onClick={toggleMute}
                     variant="outline"
-                    className="flex items-center gap-2"
+                    className="flex items-center justify-center p-2 sm:p-2.5"
                     disabled={!streamStatus.isLive}
+                    title="Toggle Mute"
                   >
                     {audioControls.mute ? (
-                      <VolumeX className="w-4 h-4" />
+                      <VolumeX className="w-4 h-4 sm:w-5 sm:h-5" />
                     ) : (
-                      <Volume2 className="w-4 h-4" />
+                      <Volume2 className="w-4 h-4 sm:w-5 sm:h-5" />
                     )}
                   </Button>
                   <Button
                     onClick={toggleMicrophone}
                     variant={audioControls.microphoneEnabled ? 'primary' : 'outline'}
-                    className="flex items-center gap-2"
+                    className="flex items-center justify-center p-2 sm:p-2.5"
                     disabled={!streamStatus.isLive}
+                    title="Toggle Microphone"
                   >
                     {audioControls.microphoneEnabled ? (
-                      <Mic className="w-4 h-4" />
+                      <Mic className="w-4 h-4 sm:w-5 sm:h-5" />
                     ) : (
-                      <MicOff className="w-4 h-4" />
+                      <MicOff className="w-4 h-4 sm:w-5 sm:h-5" />
                     )}
                   </Button>
                 </div>
@@ -277,11 +281,11 @@ export default function LiveStreaming() {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="mt-4"
+                className="mt-3 sm:mt-4"
               >
                 <Card>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Camera Settings</h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Camera Settings</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                     <div>
                       <label className="block text-xs text-gray-500 mb-1">Brightness</label>
                       <input
@@ -365,10 +369,10 @@ export default function LiveStreaming() {
         </motion.div>
 
         {/* Sidebar */}
-        <motion.div variants={itemVariants} className="space-y-6">
+        <motion.div variants={itemVariants} className="space-y-4 sm:space-y-6">
           {/* Stream Status */}
           <Card>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Stream Status</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Stream Status</h3>
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Quality</span>
@@ -395,8 +399,8 @@ export default function LiveStreaming() {
 
           {/* Active Viewers */}
           <Card>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <Users className="w-5 h-5" />
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 flex items-center gap-2">
+              <Users className="w-4 h-4 sm:w-5 sm:h-5" />
               Active Viewers
             </h3>
             <div className="space-y-3">
@@ -426,7 +430,7 @@ export default function LiveStreaming() {
 
           {/* Storage */}
           <Card>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Storage</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Storage</h3>
             <div className="space-y-3">
               <div className="flex justify-between text-sm mb-2">
                 <span className="text-gray-600">Used</span>
@@ -446,28 +450,40 @@ export default function LiveStreaming() {
 
           {/* Recent Recordings */}
           <Card>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Recordings</h3>
-            <div className="space-y-3">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Recent Recordings</h3>
+            <div className="space-y-2 sm:space-y-3">
               {recording.recentRecordings.map((rec) => (
                 <div
                   key={rec.id}
-                  className="p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-primary-300 transition-colors"
+                  className="p-2.5 sm:p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-primary-300 transition-colors"
                 >
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs text-gray-500">
-                        {new Date(rec.timestamp).toLocaleString()}
-                      </p>
-                      <p className="text-sm font-medium text-gray-900">{rec.duration}</p>
-                      <p className="text-xs text-gray-500">{rec.size}</p>
+                  <div className="flex items-start gap-3">
+                    <div className="w-20 h-16 sm:w-24 sm:h-18 flex-shrink-0 rounded overflow-hidden bg-gray-200">
+                      <img
+                        src={rec.thumbnail}
+                        alt={`Recording ${rec.id}`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                      />
                     </div>
-                    <div className="flex gap-1">
-                      <Button variant="outline" className="p-1" title="Download">
-                        <Download className="w-3 h-3" />
-                      </Button>
-                      <Button variant="outline" className="p-1 text-red-600" title="Delete">
-                        <Trash2 className="w-3 h-3" />
-                      </Button>
+                    <div className="flex-1 min-w-0 flex items-start justify-between gap-2">
+                      <div className="flex-1 min-w-0 pr-2">
+                        <p className="text-xs text-gray-500 truncate">
+                          {new Date(rec.timestamp).toLocaleString()}
+                        </p>
+                        <p className="text-sm font-medium text-gray-900">{rec.duration}</p>
+                        <p className="text-xs text-gray-500">{rec.size}</p>
+                      </div>
+                      <div className="flex gap-1 flex-shrink-0">
+                        <Button variant="outline" className="p-1.5 sm:p-1" title="Download">
+                          <Download className="w-3.5 h-3.5 sm:w-3 sm:h-3" />
+                        </Button>
+                        <Button variant="outline" className="p-1.5 sm:p-1 text-red-600" title="Delete">
+                          <Trash2 className="w-3.5 h-3.5 sm:w-3 sm:h-3" />
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -477,14 +493,25 @@ export default function LiveStreaming() {
 
           {/* Recent Snapshots */}
           <Card>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Snapshots</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Recent Snapshots</h3>
             <div className="grid grid-cols-3 gap-2">
               {streamingData.snapshots.map((snapshot) => (
                 <div
                   key={snapshot.id}
-                  className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity"
+                  className="aspect-square rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity relative group"
                 >
-                  <Camera className="w-6 h-6 text-gray-400" />
+                  <img
+                    src={snapshot.thumbnail}
+                    alt={`Snapshot ${snapshot.id}`}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gray-200 flex items-center justify-center hidden">
+                    <Camera className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400" />
+                  </div>
                 </div>
               ))}
             </div>

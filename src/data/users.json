@@ -5,6 +5,7 @@
     "password": "password123",
     "name": "Sarah",
     "role": "Parent",
+    "avatarUrl": "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxIiwibmFtZSI6IlNhcmFoIiwiZW1haWwiOiJzYXJhaEBleGFtcGxlLmNvbSIsInJvbGUiOiJQYXJlbnQifQ.sarah_token_12345"
   },
   {
@@ -13,6 +14,7 @@
     "password": "password123",
     "name": "John",
     "role": "Parent",
+    "avatarUrl": "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyIiwibmFtZSI6IkpvaG4iLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20iLCJyb2xlIjoiUGFyZW50In0.john_token_67890"
   },
   {
@@ -21,6 +23,7 @@
     "password": "password123",
     "name": "Emily",
     "role": "Nanny",
+    "avatarUrl": "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIzIiwibmFtZSI6IkVtaWx5IiwiZW1haWwiOiJuYW5ueUBleGFtcGxlLmNvbSIsInJvbGUiOiJOYW5ueSJ9.emily_token_11111"
   }
 ]
