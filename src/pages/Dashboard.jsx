@@ -21,7 +21,7 @@ import Tag from '../components/common/Tag';
 import Button from '../components/common/Button';
 
 // Import JSON data
-import userData from '../data/user.json';
+import { useAuth } from '../context/AuthContext';
 import summaryMetrics from '../data/summaryMetrics.json';
 import cryEvents from '../data/cryEvents.json';
 import sleepData from '../data/sleepData.json';
@@ -43,6 +43,8 @@ import monitorStatus from '../data/monitorStatus.json';
  * - Monitor status widgets
  */
 export default function Dashboard() {
+  const { user } = useAuth();
+  
   // Combine recent activities from multiple sources for the activity table
   const recentActivities = [
     ...cryEvents.slice(0, 2).map(event => ({
@@ -93,10 +95,10 @@ export default function Dashboard() {
       {/* Welcome Header */}
       <motion.div variants={itemVariants} className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Welcome back, {userData.name} 👋
+          Welcome back, {user?.name || 'User'} 👋
         </h1>
         <p className="text-gray-600">
-          Here's what's happening with your baby monitor today.
+          Here's what's happening with LullabAI today.
         </p>
       </motion.div>
 

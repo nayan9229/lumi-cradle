@@ -1,6 +1,6 @@
-# Baby Cry Detection Dashboard
+# LullabAI
 
-A production-ready React dashboard application for a Smart Baby Cry Detection & Monitoring System with AI-powered insights.
+A production-ready React dashboard application for a Smart Baby Cry Detection & Monitoring System with AI-powered insights. LullabAI provides comprehensive baby monitoring, sleep coaching, health tracking, and developmental milestone capture.
 
 ## Features
 

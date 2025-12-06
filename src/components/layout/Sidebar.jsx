@@ -10,7 +10,8 @@ import {
   X 
 } from 'lucide-react';
 import Avatar from '../common/Avatar';
-import userData from '../../data/user.json';
+import Logo from '../common/Logo';
+import { useAuth } from '../../context/AuthContext';
 
 /**
  * Sidebar navigation component
@@ -20,6 +21,7 @@ import userData from '../../data/user.json';
  */
 export default function Sidebar({ isOpen = true, onClose }) {
   const [isDesktop, setIsDesktop] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -66,8 +68,7 @@ export default function Sidebar({ isOpen = true, onClose }) {
       >
         {/* Logo */}
         <div className="p-6 border-b border-gray-200">
-          <h1 className="text-2xl font-bold text-primary-600">Baby Monitor</h1>
-          <p className="text-sm text-gray-500 mt-1">AI-Powered Care</p>
+          <Logo size="md" />
         </div>
 
         {/* Navigation */}
@@ -95,17 +96,19 @@ export default function Sidebar({ isOpen = true, onClose }) {
         </nav>
 
         {/* User Profile */}
-        <div className="p-4 border-t border-gray-200">
-          <div className="flex items-center gap-3 px-2 py-2">
-            <Avatar src={userData.avatarUrl} alt={userData.name} size="md" />
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">
-                {userData.name}
-              </p>
-              <p className="text-xs text-gray-500 truncate">{userData.role}</p>
+        {user && (
+          <div className="p-4 border-t border-gray-200">
+            <div className="flex items-center gap-3 px-2 py-2">
+              <Avatar src={null} alt={user.name} size="md" />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate">
+                  {user.name}
+                </p>
+                <p className="text-xs text-gray-500 truncate">{user.role}</p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Close button (mobile only) */}
         <button
