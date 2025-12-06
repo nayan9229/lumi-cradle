@@ -1,0 +1,113 @@
+{
+  "dailyReports": [
+    {
+      "date": "2024-01-15",
+      "summary": {
+        "cryEvents": 5,
+        "totalCryDuration": "18 min",
+        "sleepHours": 14.5,
+        "sleepQuality": 85,
+        "feeds": 4,
+        "diaperChanges": 5,
+        "healthAlerts": 0
+      },
+      "highlights": [
+        "Excellent sleep quality achieved",
+        "Consistent feeding schedule maintained",
+        "No health concerns detected"
+      ],
+      "recommendations": [
+        "Continue current bedtime routine",
+        "Monitor for any changes in feeding patterns"
+      ]
+    },
+    {
+      "date": "2024-01-14",
+      "summary": {
+        "cryEvents": 6,
+        "totalCryDuration": "22 min",
+        "sleepHours": 13.8,
+        "sleepQuality": 78,
+        "feeds": 4,
+        "diaperChanges": 6,
+        "healthAlerts": 1
+      },
+      "highlights": [
+        "Temperature spike detected in morning",
+        "Slightly reduced sleep quality",
+        "Increased diaper changes"
+      ],
+      "recommendations": [
+        "Monitor temperature trends",
+        "Consider adjusting room temperature"
+      ]
+    },
+    {
+      "date": "2024-01-13",
+      "summary": {
+        "cryEvents": 4,
+        "totalCryDuration": "15 min",
+        "sleepHours": 14.2,
+        "sleepQuality": 82,
+        "feeds": 4,
+        "diaperChanges": 5,
+        "healthAlerts": 0
+      },
+      "highlights": [
+        "Good sleep consistency",
+        "Normal activity levels",
+        "No health concerns"
+      ],
+      "recommendations": [
+        "Maintain current routine"
+      ]
+    }
+  ],
+  "weeklyReport": {
+    "week": "2024-01-09 to 2024-01-15",
+    "summary": {
+      "totalCryEvents": 35,
+      "avgCryDuration": "3.2 min",
+      "totalSleepHours": 98.2,
+      "avgSleepQuality": 80,
+      "totalFeeds": 28,
+      "totalDiaperChanges": 35,
+      "healthAlerts": 2,
+      "milestones": 2
+    },
+    "trends": {
+      "sleepQuality": "improving",
+      "cryFrequency": "stable",
+      "routineConsistency": "excellent"
+    },
+    "insights": [
+      "Sleep quality has improved by 10% this week",
+      "Routine consistency remains high at 92%",
+      "Two new developmental milestones achieved"
+    ]
+  },
+  "monthlyReport": {
+    "month": "January 2024",
+    "summary": {
+      "totalCryEvents": 112,
+      "avgCryDuration": "3.5 min",
+      "totalSleepHours": 420,
+      "avgSleepQuality": 78,
+      "totalFeeds": 120,
+      "totalDiaperChanges": 150,
+      "healthAlerts": 5,
+      "milestones": 8
+    },
+    "trends": {
+      "sleepQuality": "improving",
+      "cryFrequency": "decreasing",
+      "routineConsistency": "improving"
+    },
+    "topInsights": [
+      "Sleep patterns have stabilized",
+      "Cry frequency decreased by 15%",
+      "8 developmental milestones captured"
+    ]
+  }
+}
+

@@ -1,0 +1,89 @@
+{
+  "streamStatus": {
+    "isLive": true,
+    "quality": "HD",
+    "resolution": "1920x1080",
+    "fps": 30,
+    "bitrate": "2.5 Mbps",
+    "latency": "Low",
+    "lastConnected": "2024-01-15T14:30:00Z"
+  },
+  "cameraSettings": {
+    "nightVision": true,
+    "zoom": 1.0,
+    "pan": 0,
+    "tilt": 0,
+    "brightness": 75,
+    "contrast": 70,
+    "autoFocus": true
+  },
+  "recording": {
+    "isRecording": false,
+    "autoRecord": true,
+    "recordDuration": 30,
+    "storageUsed": "45.2 GB",
+    "storageTotal": "128 GB",
+    "recentRecordings": [
+      {
+        "id": "1",
+        "timestamp": "2024-01-15T10:30:00Z",
+        "duration": "15 min",
+        "size": "2.1 GB",
+        "thumbnail": "/images/recording-thumb-1.jpg"
+      },
+      {
+        "id": "2",
+        "timestamp": "2024-01-15T08:15:00Z",
+        "duration": "20 min",
+        "size": "2.8 GB",
+        "thumbnail": "/images/recording-thumb-2.jpg"
+      },
+      {
+        "id": "3",
+        "timestamp": "2024-01-14T22:00:00Z",
+        "duration": "30 min",
+        "size": "4.2 GB",
+        "thumbnail": "/images/recording-thumb-3.jpg"
+      }
+    ]
+  },
+  "audioControls": {
+    "microphoneEnabled": true,
+    "speakerEnabled": true,
+    "twoWayAudio": true,
+    "volume": 70,
+    "mute": false
+  },
+  "viewers": [
+    {
+      "name": "Sarah",
+      "role": "Parent",
+      "connected": true,
+      "connectionTime": "2h 15m"
+    },
+    {
+      "name": "John",
+      "role": "Parent",
+      "connected": false,
+      "connectionTime": null
+    }
+  ],
+  "snapshots": [
+    {
+      "id": "1",
+      "timestamp": "2024-01-15T14:25:00Z",
+      "thumbnail": "/images/snapshot-1.jpg"
+    },
+    {
+      "id": "2",
+      "timestamp": "2024-01-15T12:10:00Z",
+      "thumbnail": "/images/snapshot-2.jpg"
+    },
+    {
+      "id": "3",
+      "timestamp": "2024-01-15T08:00:00Z",
+      "thumbnail": "/images/snapshot-3.jpg"
+    }
+  ]
+}
+

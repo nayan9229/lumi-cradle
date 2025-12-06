@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "date": "2024-01-15",
+    "totalSleep": "14.5 hours",
+    "deepSleep": "8.2 hours",
+    "qualityScore": 85,
+    "routineChanges": [
+      {
+        "suggestion": "Moving bath time 30 minutes earlier improved deep sleep by 15 minutes.",
+        "impact": "positive"
+      }
+    ],
+    "activities": [
+      { "time": "19:00", "type": "Bath", "correlation": "positive" },
+      { "time": "19:30", "type": "Feed", "correlation": "positive" },
+      { "time": "20:00", "type": "Bedtime", "correlation": "positive" }
+    ]
+  },
+  {
+    "id": "2",
+    "date": "2024-01-14",
+    "totalSleep": "13.8 hours",
+    "deepSleep": "7.5 hours",
+    "qualityScore": 78,
+    "routineChanges": [],
+    "activities": [
+      { "time": "19:30", "type": "Bath", "correlation": "neutral" },
+      { "time": "20:00", "type": "Feed", "correlation": "positive" },
+      { "time": "20:30", "type": "Bedtime", "correlation": "neutral" }
+    ]
+  },
+  {
+    "id": "3",
+    "date": "2024-01-13",
+    "totalSleep": "14.2 hours",
+    "deepSleep": "8.0 hours",
+    "qualityScore": 82,
+    "routineChanges": [],
+    "activities": [
+      { "time": "19:00", "type": "Bath", "correlation": "positive" },
+      { "time": "19:30", "type": "Feed", "correlation": "positive" },
+      { "time": "20:00", "type": "Bedtime", "correlation": "positive" }
+    ]
+  }
+]
+

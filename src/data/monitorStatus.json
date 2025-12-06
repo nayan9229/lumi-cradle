@@ -1,0 +1,35 @@
+{
+  "liveStreaming": {
+    "status": "online",
+    "lastUpdate": "2024-01-15T14:30:00Z"
+  },
+  "audioMonitoring": {
+    "status": "active",
+    "sensitivity": 7,
+    "lastUpdate": "2024-01-15T14:30:00Z"
+  },
+  "instantAlerts": {
+    "status": "enabled",
+    "lastAlert": "2024-01-15T14:30:00Z"
+  },
+  "twoWayAudio": {
+    "status": "enabled",
+    "lastUsed": "2024-01-15T10:15:00Z"
+  },
+  "soothingSounds": {
+    "status": "available",
+    "currentTrack": "Ocean Waves",
+    "playing": false
+  },
+  "environmentalSensors": {
+    "roomTemperature": 72,
+    "humidity": 45,
+    "unit": "F"
+  },
+  "smartHomeIntegration": {
+    "cradleRocker": "linked",
+    "nightLight": "linked",
+    "thermostat": "linked"
+  }
+}
+

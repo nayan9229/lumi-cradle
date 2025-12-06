@@ -1,0 +1,96 @@
+{
+  "userProfile": {
+    "name": "Sarah",
+    "email": "sarah@example.com",
+    "phone": "+1 (555) 123-4567",
+    "role": "Parent",
+    "notificationPreferences": {
+      "email": true,
+      "sms": false,
+      "push": true
+    }
+  },
+  "monitorSettings": {
+    "audioSensitivity": 7,
+    "motionDetection": true,
+    "nightVision": true,
+    "autoRecord": true,
+    "recordDuration": 30,
+    "temperatureAlertThreshold": 99.5,
+    "humidityAlertThreshold": 60
+  },
+  "alertSettings": {
+    "cryAlerts": {
+      "enabled": true,
+      "immediate": true,
+      "threshold": "medium"
+    },
+    "healthAlerts": {
+      "enabled": true,
+      "temperature": true,
+      "congestion": true
+    },
+    "sleepAlerts": {
+      "enabled": false,
+      "wakeUpAlerts": true
+    },
+    "milestoneAlerts": {
+      "enabled": true,
+      "notifyAll": true
+    }
+  },
+  "audioSettings": {
+    "twoWayAudio": true,
+    "soothingSounds": {
+      "enabled": true,
+      "autoPlay": false,
+      "volume": 60,
+      "defaultTrack": "Ocean Waves"
+    },
+    "microphoneSensitivity": 7,
+    "speakerVolume": 70
+  },
+  "smartHomeIntegration": {
+    "enabled": true,
+    "devices": [
+      {
+        "name": "Cradle Rocker",
+        "type": "rocking",
+        "connected": true,
+        "autoMode": false
+      },
+      {
+        "name": "Night Light",
+        "type": "lighting",
+        "connected": true,
+        "autoMode": true
+      },
+      {
+        "name": "Thermostat",
+        "type": "climate",
+        "connected": true,
+        "autoMode": false
+      },
+      {
+        "name": "White Noise Machine",
+        "type": "audio",
+        "connected": false,
+        "autoMode": false
+      }
+    ]
+  },
+  "privacySettings": {
+    "dataRetention": 90,
+    "cloudStorage": true,
+    "localStorage": true,
+    "shareWithFamily": true,
+    "analytics": true
+  },
+  "displaySettings": {
+    "theme": "light",
+    "timezone": "America/New_York",
+    "dateFormat": "MM/DD/YYYY",
+    "timeFormat": "12h"
+  }
+}
+

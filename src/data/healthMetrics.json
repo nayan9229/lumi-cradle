@@ -1,0 +1,43 @@
+[
+  {
+    "id": "1",
+    "timestamp": "2024-01-15T10:30:00Z",
+    "type": "Temperature",
+    "value": 98.6,
+    "status": "normal",
+    "alert": null
+  },
+  {
+    "id": "2",
+    "timestamp": "2024-01-15T08:15:00Z",
+    "type": "Temperature",
+    "value": 99.2,
+    "status": "elevated",
+    "alert": "Sudden surface temperature spike detected."
+  },
+  {
+    "id": "3",
+    "timestamp": "2024-01-14T16:45:00Z",
+    "type": "Congestion",
+    "value": null,
+    "status": "detected",
+    "alert": "Possible congestion detected."
+  },
+  {
+    "id": "4",
+    "timestamp": "2024-01-14T14:20:00Z",
+    "type": "Temperature",
+    "value": 98.4,
+    "status": "normal",
+    "alert": null
+  },
+  {
+    "id": "5",
+    "timestamp": "2024-01-13T22:10:00Z",
+    "type": "Temperature",
+    "value": 98.8,
+    "status": "normal",
+    "alert": null
+  }
+]
+

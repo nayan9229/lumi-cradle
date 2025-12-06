@@ -1,0 +1,43 @@
+[
+  {
+    "id": "1",
+    "title": "Rolling over (back to tummy)",
+    "timestamp": "2024-01-15T09:30:00Z",
+    "category": "Rolling",
+    "thumbnailUrl": "/images/milestone-placeholder-1.jpg",
+    "description": "First successful roll from back to tummy"
+  },
+  {
+    "id": "2",
+    "title": "Standing up in crib",
+    "timestamp": "2024-01-12T14:20:00Z",
+    "category": "Standing",
+    "thumbnailUrl": "/images/milestone-placeholder-2.jpg",
+    "description": "Pulled up to standing position using crib rails"
+  },
+  {
+    "id": "3",
+    "title": "First attempt at sitting unassisted",
+    "timestamp": "2024-01-10T11:15:00Z",
+    "category": "Sitting",
+    "thumbnailUrl": "/images/milestone-placeholder-3.jpg",
+    "description": "Sat without support for 10 seconds"
+  },
+  {
+    "id": "4",
+    "title": "Rolling over (tummy to back)",
+    "timestamp": "2024-01-08T16:45:00Z",
+    "category": "Rolling",
+    "thumbnailUrl": "/images/milestone-placeholder-4.jpg",
+    "description": "First successful roll from tummy to back"
+  },
+  {
+    "id": "5",
+    "title": "Crawling forward",
+    "timestamp": "2024-01-05T10:00:00Z",
+    "category": "Movement",
+    "thumbnailUrl": "/images/milestone-placeholder-5.jpg",
+    "description": "Crawled forward 3 feet"
+  }
+]
+

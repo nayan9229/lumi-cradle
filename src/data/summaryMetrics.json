@@ -1,0 +1,15 @@
+{
+  "activeAlertsToday": 3,
+  "averageCryDuration": "4 min",
+  "sleepQualityScore": 82,
+  "routineConsistencyScore": 90,
+  "monthlyUserGrowth": [
+    { "month": "Jan", "value": 120 },
+    { "month": "Feb", "value": 150 },
+    { "month": "Mar", "value": 180 },
+    { "month": "Apr", "value": 210 },
+    { "month": "May", "value": 245 },
+    { "month": "Jun", "value": 280 }
+  ]
+}
+

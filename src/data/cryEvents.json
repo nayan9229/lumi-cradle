@@ -1,0 +1,48 @@
+[
+  {
+    "id": "1",
+    "timestamp": "2024-01-15T14:30:00Z",
+    "classification": "Hunger",
+    "duration": "3 min",
+    "aiLabel": "Hunger Signature: Time since last feed: 3 hours.",
+    "suggestedAction": "Offer feed",
+    "confidence": 92
+  },
+  {
+    "id": "2",
+    "timestamp": "2024-01-15T11:15:00Z",
+    "classification": "Discomfort",
+    "duration": "2 min",
+    "aiLabel": "Discomfort/Gas: High-pitched, short bursts.",
+    "suggestedAction": "Check diaper",
+    "confidence": 85
+  },
+  {
+    "id": "3",
+    "timestamp": "2024-01-15T08:45:00Z",
+    "classification": "Distress",
+    "duration": "5 min",
+    "aiLabel": "Distress/Pain: Irregular, escalating volume.",
+    "suggestedAction": "Monitor for 5 minutes",
+    "confidence": 78
+  },
+  {
+    "id": "4",
+    "timestamp": "2024-01-14T22:20:00Z",
+    "classification": "Sleepy",
+    "duration": "1 min",
+    "aiLabel": "Sleepy: Low-pitched, rhythmic pattern.",
+    "suggestedAction": "Prepare for sleep routine",
+    "confidence": 88
+  },
+  {
+    "id": "5",
+    "timestamp": "2024-01-14T16:10:00Z",
+    "classification": "Hunger",
+    "duration": "4 min",
+    "aiLabel": "Hunger Signature: Time since last feed: 2.5 hours.",
+    "suggestedAction": "Offer feed",
+    "confidence": 90
+  }
+]
+
