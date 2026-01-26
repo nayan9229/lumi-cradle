@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
+import Toast from '../common/Toast';
 
 /**
  * Main layout component that wraps all pages
@@ -54,6 +55,9 @@ export default function Layout() {
           <Outlet />
         </main>
       </div>
+      
+      {/* Toast Notifications */}
+      <Toast />
     </div>
   );
 }

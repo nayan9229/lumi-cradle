@@ -7,6 +7,7 @@ import {
   FileText, 
   Settings,
   Video,
+  Bell,
   X 
 } from 'lucide-react';
 import Avatar from '../common/Avatar';
@@ -37,6 +38,7 @@ export default function Sidebar({ isOpen = true, onClose }) {
     { path: '/live-streaming', label: 'Live Streaming', icon: Video },
     { path: '/analytics', label: 'Analytics', icon: BarChart3 },
     { path: '/reports', label: 'Reports', icon: FileText },
+    { path: '/notifications', label: 'Notifications', icon: Bell },
     { path: '/settings', label: 'Settings', icon: Settings },
   ];
 

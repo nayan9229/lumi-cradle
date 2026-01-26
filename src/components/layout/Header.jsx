@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Bell, Menu, LogOut, User } from 'lucide-react';
+import { Search, Bell, Menu, LogOut, User, AlertCircle, Heart, Baby, Moon, Utensils } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
+import { useNotifications } from '../../context/NotificationContext';
 import Avatar from '../common/Avatar';
 
 /**
@@ -13,9 +14,49 @@ import Avatar from '../common/Avatar';
 export default function Header({ onMenuClick }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const notificationCount = 3; // Static for now
+  const [showNotificationMenu, setShowNotificationMenu] = useState(false);
   const { user, logout } = useAuth();
+  const { notifications, unreadCount } = useNotifications();
   const navigate = useNavigate();
+  
+  // Get unread notifications count
+  const notificationCount = unreadCount;
+  
+  // Separate new (unread) and old (read) notifications
+  const newNotifications = notifications.filter(n => !n.isRead);
+  const oldNotifications = notifications.filter(n => n.isRead);
+  
+  // Get icon for notification type
+  const getNotificationIcon = (type) => {
+    switch (type) {
+      case 'cry':
+        return <AlertCircle className="w-4 h-4 text-red-500" />;
+      case 'health':
+        return <Heart className="w-4 h-4 text-pink-500" />;
+      case 'milestone':
+        return <Baby className="w-4 h-4 text-blue-500" />;
+      case 'sleep':
+        return <Moon className="w-4 h-4 text-indigo-500" />;
+      case 'feed':
+        return <Utensils className="w-4 h-4 text-orange-500" />;
+      default:
+        return <Bell className="w-4 h-4 text-gray-500" />;
+    }
+  };
+  
+  // Format timestamp to relative time
+  const formatTime = (timestamp) => {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+    
+    if (diffInSeconds < 60) return 'Just now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+    
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  };
 
   const handleLogout = () => {
     logout();
@@ -55,6 +96,10 @@ export default function Header({ onMenuClick }) {
             {/* Notifications */}
             <div className="relative">
               <button
+                onClick={() => {
+                  setShowNotificationMenu(!showNotificationMenu);
+                  setShowUserMenu(false);
+                }}
                 className="relative p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100"
                 aria-label="Notifications"
               >
@@ -70,12 +115,152 @@ export default function Header({ onMenuClick }) {
                   </motion.span>
                 )}
               </button>
+
+              {/* Notification Dropdown Menu */}
+              <AnimatePresence>
+                {showNotificationMenu && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-10"
+                      onClick={() => setShowNotificationMenu(false)}
+                    />
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-lg shadow-lg border border-gray-200 z-20 max-h-[600px] overflow-hidden flex flex-col"
+                    >
+                      {/* Header */}
+                      <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
+                        <h3 className="text-sm font-semibold text-gray-900">Notifications</h3>
+                        <div className="flex items-center gap-2">
+                          {notificationCount > 0 && (
+                            <span className="text-xs text-gray-500">
+                              {notificationCount} new
+                            </span>
+                          )}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setShowNotificationMenu(false);
+                              navigate('/notifications');
+                            }}
+                            className="text-xs text-primary-600 hover:text-primary-700 font-medium"
+                          >
+                            View All
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Notifications List */}
+                      <div className="overflow-y-auto flex-1">
+                        {/* New Notifications */}
+                        {newNotifications.length > 0 && (
+                          <div>
+                            <div className="px-4 py-2 bg-blue-50 border-b border-blue-100">
+                              <p className="text-xs font-semibold text-blue-700 uppercase tracking-wide">
+                                New ({newNotifications.length})
+                              </p>
+                            </div>
+                            <div className="divide-y divide-gray-100">
+                              {newNotifications.map((notification) => (
+                                <div
+                                  key={notification.id}
+                                  onClick={() => {
+                                    setShowNotificationMenu(false);
+                                    navigate(`/notifications?id=${notification.id}`);
+                                  }}
+                                  className="px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer border-l-4 border-blue-500"
+                                >
+                                  <div className="flex items-start gap-3">
+                                    <div className="mt-0.5">
+                                      {getNotificationIcon(notification.type)}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <div className="flex items-start justify-between gap-2">
+                                        <p className="text-sm font-semibold text-gray-900">
+                                          {notification.title}
+                                        </p>
+                                        <span className="text-xs text-gray-500 whitespace-nowrap">
+                                          {formatTime(notification.timestamp)}
+                                        </span>
+                                      </div>
+                                      <p className="text-xs text-gray-600 mt-1">
+                                        {notification.message}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Old Notifications */}
+                        {oldNotifications.length > 0 && (
+                          <div>
+                            {newNotifications.length > 0 && (
+                              <div className="px-4 py-2 bg-gray-50 border-b border-gray-100">
+                                <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+                                  Earlier ({oldNotifications.length})
+                                </p>
+                              </div>
+                            )}
+                            <div className="divide-y divide-gray-100">
+                              {oldNotifications.map((notification) => (
+                                <div
+                                  key={notification.id}
+                                  onClick={() => {
+                                    setShowNotificationMenu(false);
+                                    navigate(`/notifications?id=${notification.id}`);
+                                  }}
+                                  className="px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer opacity-75"
+                                >
+                                  <div className="flex items-start gap-3">
+                                    <div className="mt-0.5">
+                                      {getNotificationIcon(notification.type)}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <div className="flex items-start justify-between gap-2">
+                                        <p className="text-sm font-medium text-gray-700">
+                                          {notification.title}
+                                        </p>
+                                        <span className="text-xs text-gray-500 whitespace-nowrap">
+                                          {formatTime(notification.timestamp)}
+                                        </span>
+                                      </div>
+                                      <p className="text-xs text-gray-500 mt-1">
+                                        {notification.message}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Empty State */}
+                        {notifications.length === 0 && (
+                          <div className="px-4 py-8 text-center">
+                            <Bell className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+                            <p className="text-sm text-gray-500">No notifications</p>
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* User Menu */}
             <div className="relative">
               <button
-                onClick={() => setShowUserMenu(!showUserMenu)}
+                onClick={() => {
+                  setShowUserMenu(!showUserMenu);
+                  setShowNotificationMenu(false);
+                }}
                 className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 transition-colors"
                 aria-label="User menu"
               >

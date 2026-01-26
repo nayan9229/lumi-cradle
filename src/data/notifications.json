@@ -1,0 +1,206 @@
+[
+  {
+    "id": "1",
+    "type": "cry",
+    "title": "Cry Event Detected",
+    "message": "Hunger cry detected - Time since last feed: 3 hours",
+    "timestamp": "2024-01-15T14:30:00Z",
+    "isRead": false,
+    "priority": "high",
+    "details": {
+      "duration": "3 minutes",
+      "classification": "Hunger",
+      "confidence": 92,
+      "aiLabel": "Hunger Signature: Time since last feed: 3 hours.",
+      "suggestedAction": "Offer feed immediately",
+      "location": "Nursery",
+      "audioLevel": "High"
+    }
+  },
+  {
+    "id": "2",
+    "type": "health",
+    "title": "Health Alert",
+    "message": "Temperature spike detected: 99.2°F",
+    "timestamp": "2024-01-15T08:15:00Z",
+    "isRead": false,
+    "priority": "high",
+    "details": {
+      "temperature": 99.2,
+      "unit": "°F",
+      "status": "elevated",
+      "previousReading": 98.6,
+      "recommendation": "Monitor closely. If temperature continues to rise, consider consulting pediatrician.",
+      "location": "Nursery",
+      "sensorId": "TEMP-001"
+    }
+  },
+  {
+    "id": "3",
+    "type": "milestone",
+    "title": "New Milestone",
+    "message": "Baby rolled over for the first time!",
+    "timestamp": "2024-01-15T07:00:00Z",
+    "isRead": false,
+    "priority": "medium",
+    "details": {
+      "category": "Physical Development",
+      "description": "Baby successfully rolled from back to tummy for the first time. This is a significant motor skill development milestone.",
+      "age": "4 months",
+      "videoUrl": "/videos/milestone-rollover.mp4",
+      "thumbnailUrl": "/images/milestone-rollover.jpg"
+    }
+  },
+  {
+    "id": "4",
+    "type": "cry",
+    "title": "Cry Event Detected",
+    "message": "Discomfort cry detected - High-pitched, short bursts",
+    "timestamp": "2024-01-14T22:20:00Z",
+    "isRead": true,
+    "priority": "medium",
+    "details": {
+      "duration": "2 minutes",
+      "classification": "Discomfort/Gas",
+      "confidence": 85,
+      "aiLabel": "Discomfort/Gas: High-pitched, short bursts.",
+      "suggestedAction": "Check diaper and consider gas relief techniques",
+      "location": "Nursery",
+      "audioLevel": "Medium"
+    }
+  },
+  {
+    "id": "5",
+    "type": "health",
+    "title": "Health Update",
+    "message": "Congestion detected - Monitor closely",
+    "timestamp": "2024-01-14T16:45:00Z",
+    "isRead": true,
+    "priority": "medium",
+    "details": {
+      "condition": "Congestion",
+      "severity": "Mild",
+      "recommendation": "Use saline drops and nasal aspirator. Monitor breathing patterns. If symptoms worsen, consult pediatrician.",
+      "location": "Nursery",
+      "sensorId": "AUDIO-002"
+    }
+  },
+  {
+    "id": "6",
+    "type": "sleep",
+    "title": "Sleep Pattern",
+    "message": "Sleep quality improved by 15 minutes",
+    "timestamp": "2024-01-14T10:00:00Z",
+    "isRead": true,
+    "priority": "low",
+    "details": {
+      "totalSleep": "14.5 hours",
+      "deepSleep": "8.2 hours",
+      "qualityScore": 85,
+      "improvement": "+15 minutes",
+      "routineChange": "Moving bath time 30 minutes earlier improved deep sleep by 15 minutes.",
+      "impact": "positive"
+    }
+  },
+  {
+    "id": "7",
+    "type": "feed",
+    "title": "Feeding Reminder",
+    "message": "Time for next feeding - Last feed was 2.5 hours ago",
+    "timestamp": "2024-01-14T08:00:00Z",
+    "isRead": true,
+    "priority": "low",
+    "details": {
+      "lastFeedTime": "2024-01-14T05:30:00Z",
+      "lastFeedAmount": "6 oz",
+      "feedingType": "Formula",
+      "averageInterval": "3 hours",
+      "recommendation": "Prepare 6 oz formula. Baby typically feeds well at this time."
+    }
+  },
+  {
+    "id": "8",
+    "type": "cry",
+    "title": "Cry Event Detected",
+    "message": "Distress cry detected - Irregular, escalating volume",
+    "timestamp": "2024-01-13T20:10:00Z",
+    "isRead": true,
+    "priority": "high",
+    "details": {
+      "duration": "5 minutes",
+      "classification": "Distress/Pain",
+      "confidence": 78,
+      "aiLabel": "Distress/Pain: Irregular, escalating volume.",
+      "suggestedAction": "Check for physical discomfort, temperature, or other signs of distress",
+      "location": "Nursery",
+      "audioLevel": "Very High"
+    }
+  },
+  {
+    "id": "9",
+    "type": "health",
+    "title": "Health Alert",
+    "message": "Normal temperature reading: 98.6°F",
+    "timestamp": "2024-01-13T14:20:00Z",
+    "isRead": true,
+    "priority": "low",
+    "details": {
+      "temperature": 98.6,
+      "unit": "°F",
+      "status": "normal",
+      "previousReading": 98.4,
+      "recommendation": "All vital signs within normal range.",
+      "location": "Nursery",
+      "sensorId": "TEMP-001"
+    }
+  },
+  {
+    "id": "10",
+    "type": "sleep",
+    "title": "Sleep Pattern",
+    "message": "Sleep routine consistency maintained",
+    "timestamp": "2024-01-13T08:00:00Z",
+    "isRead": true,
+    "priority": "low",
+    "details": {
+      "totalSleep": "13.8 hours",
+      "deepSleep": "7.5 hours",
+      "qualityScore": 78,
+      "routineConsistency": "95%",
+      "note": "Sleep routine followed consistently. No changes needed."
+    }
+  },
+  {
+    "id": "11",
+    "type": "feed",
+    "title": "Feeding Completed",
+    "message": "Baby finished full bottle - 6 oz formula",
+    "timestamp": "2024-01-12T19:00:00Z",
+    "isRead": true,
+    "priority": "low",
+    "details": {
+      "feedTime": "2024-01-12T19:00:00Z",
+      "amount": "6 oz",
+      "feedingType": "Formula",
+      "duration": "15 minutes",
+      "notes": "Finished full bottle. No issues observed."
+    }
+  },
+  {
+    "id": "12",
+    "type": "milestone",
+    "title": "New Milestone",
+    "message": "First smile captured!",
+    "timestamp": "2024-01-12T15:30:00Z",
+    "isRead": true,
+    "priority": "medium",
+    "details": {
+      "category": "Social Development",
+      "description": "Baby's first intentional smile was captured. This is an important social milestone indicating emotional development.",
+      "age": "3.5 months",
+      "videoUrl": "/videos/milestone-smile.mp4",
+      "thumbnailUrl": "/images/milestone-smile.jpg"
+    }
+  }
+]
+
