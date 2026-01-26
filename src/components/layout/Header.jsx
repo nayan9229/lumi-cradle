@@ -128,7 +128,7 @@ export default function Header({ onMenuClick }) {
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-lg shadow-lg border border-gray-200 z-20 max-h-[600px] overflow-hidden flex flex-col"
+                      className="fixed sm:absolute right-2 sm:right-0 top-16 sm:top-auto sm:mt-2 w-[calc(100vw-1rem)] sm:w-80 md:w-96 max-w-[calc(100vw-1rem)] sm:max-w-none bg-white rounded-lg shadow-lg border border-gray-200 z-20 max-h-[calc(100vh-5rem)] sm:max-h-[600px] overflow-hidden flex flex-col"
                     >
                       {/* Header */}
                       <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">

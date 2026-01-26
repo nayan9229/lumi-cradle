@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Bell, 
@@ -12,7 +12,11 @@ import {
   Info,
   Send,
   Zap,
-  Settings
+  Settings,
+  Copy,
+  QrCode,
+  Smartphone,
+  Check
 } from 'lucide-react';
 import Card from '../components/common/Card';
 import Button from '../components/common/Button';
@@ -31,6 +35,38 @@ export default function NotificationSimulator() {
   const [customMessage, setCustomMessage] = useState('');
   const [lastSent, setLastSent] = useState(null);
   const [sentCount, setSentCount] = useState(0);
+  const [sessionId, setSessionId] = useState('');
+  const [pairingUrl, setPairingUrl] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [manualSessionId, setManualSessionId] = useState('');
+
+  // Initialize session
+  useEffect(() => {
+    const currentSession = notificationService.getCurrentSessionId();
+    setSessionId(currentSession);
+    setPairingUrl(notificationService.getPairingUrl());
+  }, []);
+
+  // Copy pairing URL to clipboard
+  const handleCopyUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(pairingUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
+
+  // Set manual session ID
+  const handleSetSession = () => {
+    if (manualSessionId.trim()) {
+      notificationService.setSessionId(manualSessionId.trim());
+      setSessionId(manualSessionId.trim());
+      setPairingUrl(notificationService.getPairingUrl());
+      setManualSessionId('');
+    }
+  };
 
   // Predefined notification templates
   const notificationTemplates = {
@@ -236,6 +272,93 @@ export default function NotificationSimulator() {
           </div>
         </motion.div>
 
+        {/* Device Pairing Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="mb-6"
+        >
+          <Card className="bg-gray-800/50 border-gray-700">
+            <div className="flex items-center gap-2 mb-4">
+              <Smartphone className="w-5 h-5 text-blue-400" />
+              <h2 className="text-xl font-semibold text-white">Cross-Device Pairing</h2>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Current Session ID
+                </label>
+                <div className="flex items-center gap-2">
+                  <code className="flex-1 px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white text-sm font-mono break-all">
+                    {sessionId}
+                  </code>
+                  <button
+                    onClick={handleCopyUrl}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2"
+                  >
+                    {copied ? (
+                      <>
+                        <Check className="w-4 h-4" />
+                        Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-4 h-4" />
+                        Copy URL
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Pairing URL (Open this on mobile device)
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={pairingUrl}
+                    readOnly
+                    className="flex-1 px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white text-sm"
+                  />
+                  <div className="p-2 bg-gray-700/50 border border-gray-600 rounded-lg">
+                    <QrCode className="w-5 h-5 text-gray-400" />
+                  </div>
+                </div>
+                <p className="text-xs text-gray-400 mt-2">
+                  Open this URL on your mobile device to receive notifications in real-time
+                </p>
+              </div>
+
+              <div className="pt-4 border-t border-gray-700">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Manual Session ID Entry
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={manualSessionId}
+                    onChange={(e) => setManualSessionId(e.target.value)}
+                    placeholder="Enter session ID from mobile device"
+                    className="flex-1 px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <Button
+                    onClick={handleSetSession}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    Connect
+                  </Button>
+                </div>
+                <p className="text-xs text-gray-400 mt-2">
+                  Use this if you want to use a session ID from another device
+                </p>
+              </div>
+            </div>
+          </Card>
+        </motion.div>
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Quick Actions */}
           <motion.div
@@ -362,10 +485,18 @@ export default function NotificationSimulator() {
           <Card className="bg-gray-800/50 border-gray-700">
             <h3 className="text-lg font-semibold text-white mb-4">How to Use</h3>
             <div className="space-y-2 text-sm text-gray-300">
-              <p>1. Open your main app in another browser tab</p>
+              <p className="font-semibold text-white mb-2">Same-Device (Multiple Tabs):</p>
+              <p>1. Open your main app in another browser tab on the same device</p>
               <p>2. Click any quick action button or create a custom notification</p>
-              <p>3. The notification will appear in real-time in the main app</p>
-              <p>4. Click the toast notification in the main app to view details</p>
+              <p>3. The notification will appear in real-time in the main app tab</p>
+              
+              <p className="font-semibold text-white mt-4 mb-2">Cross-Device (Desktop → Mobile):</p>
+              <p>1. Copy the pairing URL above</p>
+              <p>2. Open the URL on your mobile device (or scan QR code if implemented)</p>
+              <p>3. Both devices are now paired with the same session ID</p>
+              <p>4. Send notifications from this simulator - they'll appear on mobile instantly</p>
+              <p>5. On mobile, tap the notification to view details</p>
+              
               <p className="mt-4 text-yellow-400 font-medium">
                 ⚠️ This page is for demo purposes only and should not be accessible to end users
               </p>
