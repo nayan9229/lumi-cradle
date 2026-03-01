@@ -1,107 +1,97 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { notificationService } from '../services/notificationService';
-import notificationsData from '../data/notifications.json';
 
-/**
- * Notification Context
- * Manages global notification state and real-time updates
- */
 const NotificationContext = createContext(null);
 
+const CHANNEL_KEY = 'notification_channel';
+
+function getInitialChannel() {
+  const params = new URLSearchParams(window.location.search);
+  return (
+    params.get('channel') ||
+    sessionStorage.getItem(CHANNEL_KEY) ||
+    'default'
+  );
+}
+
 export function NotificationProvider({ children }) {
-  const [notifications, setNotifications] = useState(() => {
-    // Load from localStorage or use default data
-    const stored = localStorage.getItem('notifications');
-    if (stored) {
-      try {
-        return JSON.parse(stored);
-      } catch (e) {
-        return notificationsData;
-      }
-    }
-    return notificationsData;
-  });
-
+  const [notifications, setNotifications] = useState([]);
   const [toastNotification, setToastNotification] = useState(null);
+  const [isConnected, setIsConnected] = useState(false);
+  const [channel, setChannelState] = useState(getInitialChannel);
 
-  // Save to localStorage whenever notifications change
+  // Connect to the WebSocket on mount, reconnect when channel changes.
   useEffect(() => {
-    localStorage.setItem('notifications', JSON.stringify(notifications));
-  }, [notifications]);
+    sessionStorage.setItem(CHANNEL_KEY, channel);
+    notificationService.connect(channel);
 
-  // Listen for real-time notifications
-  useEffect(() => {
-    const unsubscribe = notificationService.subscribe((newNotification) => {
-      // Check if notification already exists using a ref or by checking state
-      setNotifications(prev => {
-        const exists = prev.some(n => n.id === newNotification.id);
-        if (!exists) {
-          // Add new notification
-          const updated = [newNotification, ...prev];
-          
-          // Show toast
-          setToastNotification(newNotification);
-          
-          // Auto-hide toast after 5 seconds
-          setTimeout(() => {
-            setToastNotification(null);
-          }, 5000);
-          
-          return updated;
-        }
-        return prev;
+    const unsubNotif = notificationService.subscribe((notification) => {
+      setNotifications((prev) => {
+        if (prev.some((n) => n.id === notification.id)) return prev;
+        const updated = [notification, ...prev];
+
+        setToastNotification(notification);
+        setTimeout(() => setToastNotification(null), 5000);
+
+        return updated;
       });
     });
 
-    return () => {
-      unsubscribe();
-    };
-  }, []); // Empty dependency array - only subscribe once
+    const unsubConn = notificationService.onConnectionChange(setIsConnected);
 
-  // Add notification manually
+    // Fetch recent notifications so the user sees history on load.
+    notificationService.fetchRecent().then((recent) => {
+      if (recent.length) {
+        setNotifications((prev) => {
+          const existingIds = new Set(prev.map((n) => n.id));
+          const fresh = recent.filter((n) => !existingIds.has(n.id));
+          return [...prev, ...fresh];
+        });
+      }
+    }).catch(() => {
+      // Backend may not be running yet; that's OK.
+    });
+
+    return () => {
+      unsubNotif();
+      unsubConn();
+      notificationService.disconnect();
+    };
+  }, [channel]);
+
+  const setChannel = useCallback((ch) => {
+    setChannelState(ch);
+  }, []);
+
   const addNotification = useCallback((notification) => {
-    const newNotification = {
+    const n = {
       ...notification,
       id: notification.id || `notif-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       timestamp: notification.timestamp || new Date().toISOString(),
       isRead: false,
     };
-
-    setNotifications(prev => [newNotification, ...prev]);
-    setToastNotification(newNotification);
-    
-    setTimeout(() => {
-      setToastNotification(null);
-    }, 5000);
+    setNotifications((prev) => [n, ...prev]);
+    setToastNotification(n);
+    setTimeout(() => setToastNotification(null), 5000);
   }, []);
 
-  // Toggle read status
   const toggleReadStatus = useCallback((id) => {
-    setNotifications(prev =>
-      prev.map(notif =>
-        notif.id === id ? { ...notif, isRead: !notif.isRead } : notif
-      )
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, isRead: !n.isRead } : n)),
     );
   }, []);
 
-  // Mark all as read
   const markAllAsRead = useCallback(() => {
-    setNotifications(prev =>
-      prev.map(notif => ({ ...notif, isRead: true }))
-    );
+    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
   }, []);
 
-  // Mark as read
   const markAsRead = useCallback((id) => {
-    setNotifications(prev =>
-      prev.map(notif =>
-        notif.id === id ? { ...notif, isRead: true } : notif
-      )
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)),
     );
   }, []);
 
-  // Get unread count
-  const unreadCount = notifications.filter(n => !n.isRead).length;
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   const value = {
     notifications,
@@ -112,6 +102,9 @@ export function NotificationProvider({ children }) {
     markAllAsRead,
     markAsRead,
     unreadCount,
+    isConnected,
+    channel,
+    setChannel,
   };
 
   return (
@@ -121,14 +114,8 @@ export function NotificationProvider({ children }) {
   );
 }
 
-/**
- * Hook to use notification context
- */
 export function useNotifications() {
-  const context = useContext(NotificationContext);
-  if (!context) {
-    throw new Error('useNotifications must be used within a NotificationProvider');
-  }
-  return context;
+  const ctx = useContext(NotificationContext);
+  if (!ctx) throw new Error('useNotifications must be used within NotificationProvider');
+  return ctx;
 }
-

@@ -1,221 +1,223 @@
 /**
- * Enhanced Notification Service
- * Handles cross-tab and cross-device communication for real-time notifications
- * - BroadcastChannel API for same-device tabs
- * - Shared session mechanism for cross-device communication (demo)
+ * Server-driven Notification Service
+ *
+ * Connects to the Go backend via WebSocket for real-time cross-device
+ * notifications.  Sends notifications through the REST API so the server
+ * can broadcast them to every connected client.
+ *
+ * Reconnection uses exponential back-off with jitter (1 s → 30 s cap).
  */
+
+const API_BASE = import.meta.env.VITE_API_URL || '';
+const WS_BASE =
+  import.meta.env.VITE_WS_URL ||
+  `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}`;
 
 class NotificationService {
   constructor() {
-    this.channel = null;
+    this.ws = null;
     this.listeners = [];
-    this.sessionId = null;
-    this.pollInterval = null;
-    this.pollIntervalMs = 500; // Poll every 500ms for cross-device
-    this.lastNotificationId = null;
-    this.init();
+    this.connectionListeners = [];
+    this.channel = null;
+    this.connected = false;
+    this._reconnectTimer = null;
+    this._reconnectAttempt = 0;
+    this._maxReconnectAttempts = 20;
+    this._intentionalClose = false;
   }
 
-  init() {
-    // Initialize BroadcastChannel for same-device tabs
-    try {
-      this.channel = new BroadcastChannel('notification_channel');
-      
-      this.channel.onmessage = (event) => {
-        if (event.data.type === 'NEW_NOTIFICATION') {
-          this.notifyListeners(event.data.notification);
-        }
-      };
-    } catch (error) {
-      console.warn('BroadcastChannel not supported, falling back to localStorage events');
-      window.addEventListener('storage', (event) => {
-        if (event.key === 'notification_broadcast' && event.newValue) {
-          try {
-            const data = JSON.parse(event.newValue);
-            if (data.type === 'NEW_NOTIFICATION') {
-              this.notifyListeners(data.notification);
-            }
-          } catch (e) {
-            console.error('Error parsing notification broadcast:', e);
-          }
-        }
-      });
+  // -------------------------------------------------------------------------
+  // Connection lifecycle
+  // -------------------------------------------------------------------------
+
+  /**
+   * Open a WebSocket to the notification channel.
+   * @param {string} [channel='default']
+   */
+  connect(channel = 'default') {
+    this.channel = channel;
+    this._intentionalClose = false;
+    this._open();
+  }
+
+  /** Cleanly disconnect and stop reconnecting. */
+  disconnect() {
+    this._intentionalClose = true;
+    clearTimeout(this._reconnectTimer);
+    if (this.ws) {
+      this.ws.close(1000, 'client disconnect');
+      this.ws = null;
     }
-
-    // Initialize cross-device polling
-    this.initCrossDevicePolling();
+    this._setConnected(false);
   }
 
   /**
-   * Initialize or get session ID from URL or generate new one
+   * Switch to a different channel. Disconnects + reconnects automatically.
+   * @param {string} channel
    */
-  getSessionId() {
-    if (this.sessionId) return this.sessionId;
+  setChannel(channel) {
+    if (channel === this.channel) return;
+    this.disconnect();
+    this.connect(channel);
+  }
 
-    // Check URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const sessionParam = urlParams.get('session');
-    
-    if (sessionParam) {
-      this.sessionId = sessionParam;
-      // Store in sessionStorage for persistence
-      sessionStorage.setItem('notification_session', sessionParam);
-    } else {
-      // Check sessionStorage
-      const stored = sessionStorage.getItem('notification_session');
-      if (stored) {
-        this.sessionId = stored;
-      } else {
-        // Generate new session ID
-        this.sessionId = `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-        sessionStorage.setItem('notification_session', this.sessionId);
-      }
-    }
+  getChannel() {
+    return this.channel;
+  }
 
-    return this.sessionId;
+  isConnected() {
+    return this.connected;
+  }
+
+  // -------------------------------------------------------------------------
+  // Send notifications (REST)
+  // -------------------------------------------------------------------------
+
+  /**
+   * Post a notification to the server which broadcasts it to all connected
+   * clients on the same channel.
+   *
+   * @param {Object} notification
+   * @returns {Promise<Object>} server response
+   */
+  async sendNotification(notification) {
+    const res = await fetch(`${API_BASE}/api/notifications`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...notification, channel: this.channel }),
+    });
+    if (!res.ok) throw new Error(`Send failed: ${res.status} ${res.statusText}`);
+    return res.json();
   }
 
   /**
-   * Initialize cross-device polling mechanism
-   * Uses a shared storage key based on session ID
+   * Fetch recent notifications stored on the server for the current channel.
+   * @returns {Promise<Object[]>}
    */
-  initCrossDevicePolling() {
-    const sessionId = this.getSessionId();
-    const storageKey = `notification_cross_device_${sessionId}`;
-
-    // Poll for cross-device notifications
-    this.pollInterval = setInterval(() => {
-      try {
-        const stored = localStorage.getItem(storageKey);
-        if (stored) {
-          const data = JSON.parse(stored);
-          
-          // Check if this is a new notification
-          if (data.notification && data.notification.id !== this.lastNotificationId) {
-            this.lastNotificationId = data.notification.id;
-            
-            // Notify listeners
-            this.notifyListeners(data.notification);
-            
-            // Clear the storage after reading (to prevent duplicate notifications)
-            // But keep it for a short time to ensure all devices get it
-            setTimeout(() => {
-              localStorage.removeItem(storageKey);
-            }, 2000);
-          }
-        }
-      } catch (e) {
-        console.error('Error polling cross-device notifications:', e);
-      }
-    }, this.pollIntervalMs);
+  async fetchRecent() {
+    const res = await fetch(
+      `${API_BASE}/api/notifications?channel=${encodeURIComponent(this.channel || 'default')}`,
+    );
+    if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+    const body = await res.json();
+    return body.notifications || [];
   }
 
   /**
-   * Send a notification to all tabs and devices
-   * @param {Object} notification - Notification object
+   * Get live connection stats from the server.
+   * @returns {Promise<Object>}
    */
-  broadcastNotification(notification) {
-    const message = {
-      type: 'NEW_NOTIFICATION',
-      notification: {
-        ...notification,
-        id: notification.id || `notif-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        timestamp: notification.timestamp || new Date().toISOString(),
-        isRead: false,
-      },
-    };
-
-    // Broadcast to same-device tabs
-    if (this.channel) {
-      this.channel.postMessage(message);
-    } else {
-      // Fallback to localStorage for same-device
-      localStorage.setItem('notification_broadcast', JSON.stringify(message));
-      localStorage.removeItem('notification_broadcast');
-    }
-
-    // Broadcast to cross-device (using shared session storage)
-    const sessionId = this.getSessionId();
-    const storageKey = `notification_cross_device_${sessionId}`;
-    
-    // Store notification with timestamp
-    const crossDeviceMessage = {
-      ...message,
-      timestamp: Date.now(),
-      sessionId: sessionId,
-    };
-    
-    localStorage.setItem(storageKey, JSON.stringify(crossDeviceMessage));
-    this.lastNotificationId = message.notification.id;
+  async getStatus() {
+    const res = await fetch(`${API_BASE}/api/notifications/status`);
+    return res.json();
   }
 
+  // -------------------------------------------------------------------------
+  // Event subscriptions
+  // -------------------------------------------------------------------------
+
   /**
-   * Subscribe to notification events
-   * @param {Function} callback - Callback function to receive notifications
-   * @returns {Function} Unsubscribe function
+   * Subscribe to incoming notifications.
+   * @param {(notification: Object) => void} cb
+   * @returns {() => void} unsubscribe function
    */
-  subscribe(callback) {
-    this.listeners.push(callback);
-    
+  subscribe(cb) {
+    this.listeners.push(cb);
     return () => {
-      this.listeners = this.listeners.filter(listener => listener !== callback);
+      this.listeners = this.listeners.filter((l) => l !== cb);
     };
   }
 
   /**
-   * Notify all listeners
-   * @param {Object} notification - Notification object
+   * Subscribe to connection-state changes.
+   * @param {(connected: boolean) => void} cb
+   * @returns {() => void} unsubscribe function
    */
-  notifyListeners(notification) {
-    this.listeners.forEach(listener => {
+  onConnectionChange(cb) {
+    this.connectionListeners.push(cb);
+    return () => {
+      this.connectionListeners = this.connectionListeners.filter((l) => l !== cb);
+    };
+  }
+
+  /** Tear down everything. */
+  destroy() {
+    this.disconnect();
+    this.listeners = [];
+    this.connectionListeners = [];
+  }
+
+  // -------------------------------------------------------------------------
+  // Internal
+  // -------------------------------------------------------------------------
+
+  _open() {
+    if (this.ws) {
+      this.ws.close();
+      this.ws = null;
+    }
+
+    const url = `${WS_BASE}/ws/notifications?channel=${encodeURIComponent(this.channel || 'default')}`;
+
+    try {
+      this.ws = new WebSocket(url);
+    } catch (err) {
+      console.error('[ws] construction failed', err);
+      this._scheduleReconnect();
+      return;
+    }
+
+    this.ws.onopen = () => {
+      this._reconnectAttempt = 0;
+      this._setConnected(true);
+    };
+
+    this.ws.onmessage = (event) => {
       try {
-        listener(notification);
-      } catch (error) {
-        console.error('Error in notification listener:', error);
+        const envelope = JSON.parse(event.data);
+        if (envelope.type === 'notification') {
+          const notif = typeof envelope.data === 'string'
+            ? JSON.parse(envelope.data)
+            : envelope.data;
+          this._emit(notif);
+        }
+      } catch {
+        // ignore malformed frames
       }
+    };
+
+    this.ws.onclose = () => {
+      this._setConnected(false);
+      if (!this._intentionalClose) this._scheduleReconnect();
+    };
+
+    this.ws.onerror = () => {
+      // onclose fires right after onerror, which triggers reconnect
+    };
+  }
+
+  _scheduleReconnect() {
+    if (this._reconnectAttempt >= this._maxReconnectAttempts) return;
+    const base = Math.min(1000 * Math.pow(2, this._reconnectAttempt), 30000);
+    const jitter = Math.random() * 1000;
+    const delay = base + jitter;
+    this._reconnectAttempt++;
+    this._reconnectTimer = setTimeout(() => this._open(), delay);
+  }
+
+  _setConnected(val) {
+    if (this.connected === val) return;
+    this.connected = val;
+    this.connectionListeners.forEach((cb) => {
+      try { cb(val); } catch { /* */ }
     });
   }
 
-  /**
-   * Set session ID manually (for device pairing)
-   * @param {string} sessionId - Session ID to use
-   */
-  setSessionId(sessionId) {
-    this.sessionId = sessionId;
-    sessionStorage.setItem('notification_session', sessionId);
-  }
-
-  /**
-   * Get current session ID
-   * @returns {string} Current session ID
-   */
-  getCurrentSessionId() {
-    return this.getSessionId();
-  }
-
-  /**
-   * Generate QR code data for session pairing
-   * @returns {string} URL with session ID
-   */
-  getPairingUrl() {
-    const sessionId = this.getSessionId();
-    const baseUrl = window.location.origin + window.location.pathname;
-    return `${baseUrl}?session=${sessionId}`;
-  }
-
-  /**
-   * Cleanup
-   */
-  destroy() {
-    if (this.channel) {
-      this.channel.close();
-    }
-    if (this.pollInterval) {
-      clearInterval(this.pollInterval);
-    }
-    this.listeners = [];
+  _emit(notification) {
+    this.listeners.forEach((cb) => {
+      try { cb(notification); } catch { /* */ }
+    });
   }
 }
 
-// Export singleton instance
 export const notificationService = new NotificationService();
