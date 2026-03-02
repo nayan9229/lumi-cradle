@@ -21,6 +21,18 @@ export default defineConfig(({ mode }) => {
             })
           },
         },
+        '/wss': {
+          target: proxyTarget,
+          ws: true,
+          configure: (proxy) => {
+            proxy.on('error', (err, req, res) => {
+              if (err.code === 'ECONNREFUSED' || err.code === 'ECONNRESET' || err.code === 'EPIPE') {
+                return
+              }
+              console.error('[vite] ws proxy error:', err.message)
+            })
+          },
+        },
         '/api': {
           target: proxyTarget,
           changeOrigin: true,
