@@ -11,8 +11,7 @@
 const API_BASE = import.meta.env.VITE_API_URL || '';
 const WS_BASE =
   import.meta.env.VITE_WS_URL ||
-  `${window.location.protocol === 'https:' ? 'ws:' : 'ws:'}//${window.location.host}`;
-  // `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}`;
+  `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}`;
 
 class NotificationService {
   constructor() {
