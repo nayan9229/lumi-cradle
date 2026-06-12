@@ -34,7 +34,7 @@ export default function Sidebar({ isOpen = true, onClose }) {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
   const navItems = [
-    { path: '/', label: 'Dashboard', icon: LayoutDashboard },
+    { path: '/', label: 'live Dashboard', icon: LayoutDashboard },
     { path: '/live-streaming', label: 'Live Streaming', icon: Video },
     { path: '/analytics', label: 'Analytics', icon: BarChart3 },
     { path: '/reports', label: 'Reports', icon: FileText },
